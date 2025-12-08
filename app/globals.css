@@ -1,7 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-:root { color-scheme: dark; }
-html, body { background: #0a0b0f; color: #fff; min-height: 100vh; background-image: radial-gradient(1200px 600px at 10% 10%, rgba(110,58,255,0.35), transparent 60%), radial-gradient(900px 500px at 90% 20%, rgba(33,208,122,0.25), transparent 60%), radial-gradient(800px 800px at 50% 100%, rgba(110,58,255,0.18), transparent 60%); background-attachment: fixed; background-size: cover; }
-.container-lg { max-width: 72rem; margin: 0 auto; padding: 0 1.5rem; }
+:root { color-scheme: dark; font-size: 18px; }
+html, body { background: #0a0b0f; color: #fff; min-height: 100vh; background-image: radial-gradient(1200px 600px at 10% 10%, rgba(110,58,255,0.35), transparent 60%), radial-gradient(900px 500px at 90% 20%, rgba(33,208,122,0.25), transparent 60%), radial-gradient(800px 800px at 50% 100%, rgba(110,58,255,0.18), transparent 60%); background-attachment: fixed; background-size: cover; font-size: 1rem; line-height: 1.7; }
+.container-lg { max-width: 84rem; margin: 0 auto; padding: 0 1rem; }
 .card { background: rgba(18,19,26,0.8); backdrop-filter: blur(6px); border-radius: 1rem; border: 1px solid rgba(255,255,255,0.1); }

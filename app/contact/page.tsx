@@ -147,7 +147,7 @@ export default function Contact() {
 
   return (
     <section className="container-lg py-20">
-      <div className="max-w-4xl mx-auto">
+      <div className="max-w-5xl mx-auto">
         {/* Story Section */}
         <div className="mb-16 text-center">
           <h1 className="text-4xl md:text-5xl font-bold mb-6">
