@@ -3,7 +3,7 @@ import Image from "next/image";
 
 export default function PeoplePage() {
   return (
-    <main className="mx-auto max-w-4xl px-4 py-16 space-y-16">
+    <main className="mx-auto max-w-6xl px-4 py-16 space-y-16">
       {/* Hero */}
       <section className="space-y-5">
         <p className="text-xs font-semibold uppercase tracking-[0.2em] text-neutral-400">
