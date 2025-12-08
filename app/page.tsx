@@ -4,48 +4,6 @@ import Image from "next/image";
 export default function HomePage() {
   return (
     <main className="min-h-screen bg-slate-950 text-slate-100">
-      {/* NAVBAR */}
-      <header className="sticky top-0 z-30 border-b border-slate-800 bg-slate-950/80 backdrop-blur">
-        <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3 md:py-4">
-          <div className="flex items-center gap-3">
-            <Image
-              src="/junova-logo-horizontal.svg"
-              alt="junova"
-              width={148}
-              height={40}
-              priority
-            />
-          </div>
-
-          <nav className="hidden items-center gap-8 text-sm font-medium text-slate-200 md:flex">
-            <a href="#people" className="hover:text-slate-50">
-              People
-            </a>
-            <a href="#processes" className="hover:text-slate-50">
-              Processes
-            </a>
-            <a href="#product" className="hover:text-slate-50">
-              Product
-            </a>
-            <a
-              href="#contact"
-              className="rounded-full border border-slate-700 px-4 py-1.5 text-xs uppercase tracking-wide text-slate-100 hover:border-slate-500"
-            >
-              Talk to a rebel CIO
-            </a>
-          </nav>
-
-          <button
-            className="inline-flex items-center justify-center rounded-md border border-slate-700 p-2 text-slate-200 md:hidden"
-            aria-label="Open navigation"
-          >
-            <span className="block h-0.5 w-5 bg-slate-200" />
-            <span className="mt-1 block h-0.5 w-5 bg-slate-400" />
-            <span className="mt-1 block h-0.5 w-5 bg-slate-500" />
-          </button>
-        </div>
-      </header>
-
       {/* HERO */}
       <section className="relative overflow-hidden border-b border-slate-800">
         {/* Glow background */}
@@ -73,9 +31,9 @@ export default function HomePage() {
             <br />
             Uncompromised.
             <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#6E3AFF] via-[#4E6FEF] to-[#21D07A]">
+          
               Unowned.
-            </span>
+            
           </h1>
 
           <p className="mt-5 max-w-2xl text-sm text-slate-300 md:text-base">
@@ -110,10 +68,10 @@ export default function HomePage() {
           WHO WE ARE
         </p>
 
-        <h2 className="mt-4 text-3xl font-semibold md:text-4xl">
-          People. Processes.{" "}
-          <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#6E3AFF] to-[#21D07A]">
-            Product.
+        <h2 className="text-transparent bg-clip-text bg-gradient-to-r from-[#6E3AFF] to-[#21D07A]">
+          {" "}
+          <span className="mt-4 text-3xl font-semibold md:text-4xl">
+            People.Processes.Product.
           </span>
         </h2>
 

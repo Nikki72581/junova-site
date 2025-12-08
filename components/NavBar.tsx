@@ -1,6 +1,7 @@
 "use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import Image from "next/image";
 export function NavBar() {
   const pathname = usePathname();
   const links = [
@@ -13,7 +14,7 @@ export function NavBar() {
   return (<header className="sticky top-0 z-50 backdrop-blur bg-black/30 border-b border-white/10">
     <div className="container-lg flex items-center justify-between h-16">
       <Link href="/" className="flex items-center gap-2 font-bold">
-        <svg width="28" height="28" viewBox="0 0 24 24" className="text-junova-accent"><circle cx="12" cy="12" r="10" fill="currentColor" /></svg>
+        <Image src="/favicon.svg" alt="Junova logo" width={28} height={28} />
         <span>junova</span>
       </Link>
       <nav className="hidden md:flex items-center gap-1">
