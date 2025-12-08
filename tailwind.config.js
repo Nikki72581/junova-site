@@ -12,3 +12,22 @@ module.exports = {
   },
   plugins: [],
 }
+// tailwind.config.js
+module.exports = {
+  content: ["./app/**/*.{ts,tsx,js,jsx}", "./pages/**/*.{ts,tsx,js,jsx}", "./components/**/*.{ts,tsx,js,jsx}"],
+  theme: {
+    extend: {
+      colors: {
+        junova: {
+          start: "#6E3AFF",
+          mid: "#4E6FEF",
+          end: "#21D07A",
+        },
+      },
+      backgroundImage: {
+        "junova-gradient": "linear-gradient(to right, #6E3AFF, #4E6FEF, #21D07A)",
+      },
+    },
+  },
+  plugins: [],
+};
