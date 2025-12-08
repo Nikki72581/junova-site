@@ -18,7 +18,7 @@ export function NavBar() {
       </Link>
       <nav className="hidden md:flex items-center gap-1">
         {links.map(l => (<Link key={l.href} href={l.href} className={"px-3 py-2 rounded-full text-sm " + (pathname===l.href ? "bg-white text-black" : "text-white/80 hover:text-white")}>{l.label}</Link>))}
-        <a href="https://junova1.odoo.com/web/login" target="_blank" className="ml-2 px-4 py-2 rounded-full border border-white/20 hover:border-white/60 text-sm">Client Login</a>
+        <Link href="/client-login" className="ml-2 px-4 py-2 rounded-full border border-white/20 hover:border-white/60 text-sm">Client Login</Link>
       </nav>
       <a href="/contact" className="md:hidden px-3 py-2 rounded-full bg-white text-black text-sm font-semibold">Contact</a>
     </div>
