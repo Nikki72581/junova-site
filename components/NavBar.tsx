@@ -9,6 +9,7 @@ export function NavBar() {
     { href: "/people", label: "People" },
     { href: "/processes", label: "Processes" },
     { href: "/product", label: "Product" },
+    { href: "/media", label: "Media" },
     { href: "/contact", label: "Contact" },
   ];
   return (<header className="sticky top-0 z-50 backdrop-blur bg-black/30 border-b border-white/10">
