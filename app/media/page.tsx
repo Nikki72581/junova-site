@@ -107,92 +107,6 @@ export default function MediaPage() {
         </div>
       </section>
 
-      {/* YouTube Videos Section */}
-      <section className="mx-auto max-w-6xl px-4 py-14 md:py-20">
-        <div className="mb-8">
-          <h2 className="text-transparent bg-clip-text bg-gradient-to-r from-[#6E3AFF] to-[#21D07A]">
-            <span className="text-2xl font-semibold md:text-3xl">
-              Latest Videos
-            </span>
-          </h2>
-          <div className="mt-3 h-px w-20 bg-gradient-to-r from-[#6E3AFF] to-[#21D07A]" />
-        </div>
-
-        {loadingVideos && (
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {[1, 2, 3].map((i) => (
-              <div key={i} className="animate-pulse">
-                <div className="aspect-video w-full rounded-lg bg-slate-800/50" />
-                <div className="mt-3 h-4 w-3/4 rounded bg-slate-800/50" />
-                <div className="mt-2 h-3 w-1/2 rounded bg-slate-800/50" />
-              </div>
-            ))}
-          </div>
-        )}
-
-        {videoError && (
-          <div className="rounded-xl border border-slate-800 bg-slate-900/40 p-6 text-center">
-            <p className="text-slate-400">{videoError}</p>
-          </div>
-        )}
-
-        {!loadingVideos && !videoError && videos.length === 0 && (
-          <div className="rounded-xl border border-slate-800 bg-slate-900/40 p-6 text-center">
-            <p className="text-slate-400">No videos available at this time.</p>
-          </div>
-        )}
-
-        {!loadingVideos && !videoError && videos.length > 0 && (
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {videos.map((video) => (
-              <a
-                key={video.id}
-                href={`https://www.youtube.com/watch?v=${video.videoId}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group rounded-xl border border-slate-800 bg-slate-900/40 overflow-hidden transition-all duration-300 hover:border-slate-600 hover:shadow-lg hover:shadow-purple-500/10"
-              >
-                <div className="relative aspect-video w-full overflow-hidden bg-slate-800">
-                  <Image
-                    src={brokenImages.has(`video-${video.id}`) ? FALLBACK_IMAGE : video.thumbnail || FALLBACK_IMAGE}
-                    alt={video.title}
-                    fill
-                    className="object-cover transition-transform duration-300 group-hover:scale-105"
-                    onError={() => handleImageError(`video-${video.id}`)}
-                  />
-                  <div className="absolute inset-0 flex items-center justify-center bg-black/40 opacity-0 transition-opacity group-hover:opacity-100">
-                    <svg
-                      className="h-16 w-16 text-white"
-                      fill="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path d="M8 5v14l11-7z" />
-                    </svg>
-                  </div>
-                </div>
-                <div className="p-4">
-                  <h3 className="font-semibold text-slate-100 line-clamp-2 group-hover:text-emerald-300 transition-colors">
-                    {video.title}
-                  </h3>
-                  <p className="mt-2 text-xs text-slate-400">
-                    {new Date(video.publishedAt).toLocaleDateString("en-US", {
-                      year: "numeric",
-                      month: "long",
-                      day: "numeric",
-                    })}
-                  </p>
-                  {video.description && (
-                    <p className="mt-2 text-sm text-slate-300 line-clamp-2">
-                      {video.description}
-                    </p>
-                  )}
-                </div>
-              </a>
-            ))}
-          </div>
-        )}
-      </section>
-
       {/* Medium Articles Section */}
       <section className="mx-auto max-w-6xl px-4 py-14 md:py-20">
         <div className="mb-8">
@@ -300,6 +214,92 @@ export default function MediaPage() {
                       />
                     </svg>
                   </div>
+                </div>
+              </a>
+            ))}
+          </div>
+        )}
+      </section>
+
+      {/* YouTube Videos Section */}
+      <section className="mx-auto max-w-6xl px-4 py-14 md:py-20">
+        <div className="mb-8">
+          <h2 className="text-transparent bg-clip-text bg-gradient-to-r from-[#6E3AFF] to-[#21D07A]">
+            <span className="text-2xl font-semibold md:text-3xl">
+              Latest Videos
+            </span>
+          </h2>
+          <div className="mt-3 h-px w-20 bg-gradient-to-r from-[#6E3AFF] to-[#21D07A]" />
+        </div>
+
+        {loadingVideos && (
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {[1, 2, 3].map((i) => (
+              <div key={i} className="animate-pulse">
+                <div className="aspect-video w-full rounded-lg bg-slate-800/50" />
+                <div className="mt-3 h-4 w-3/4 rounded bg-slate-800/50" />
+                <div className="mt-2 h-3 w-1/2 rounded bg-slate-800/50" />
+              </div>
+            ))}
+          </div>
+        )}
+
+        {videoError && (
+          <div className="rounded-xl border border-slate-800 bg-slate-900/40 p-6 text-center">
+            <p className="text-slate-400">{videoError}</p>
+          </div>
+        )}
+
+        {!loadingVideos && !videoError && videos.length === 0 && (
+          <div className="rounded-xl border border-slate-800 bg-slate-900/40 p-6 text-center">
+            <p className="text-slate-400">No videos available at this time.</p>
+          </div>
+        )}
+
+        {!loadingVideos && !videoError && videos.length > 0 && (
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {videos.map((video) => (
+              <a
+                key={video.id}
+                href={`https://www.youtube.com/watch?v=${video.videoId}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group rounded-xl border border-slate-800 bg-slate-900/40 overflow-hidden transition-all duration-300 hover:border-slate-600 hover:shadow-lg hover:shadow-purple-500/10"
+              >
+                <div className="relative aspect-video w-full overflow-hidden bg-slate-800">
+                  <Image
+                    src={brokenImages.has(`video-${video.id}`) ? FALLBACK_IMAGE : video.thumbnail || FALLBACK_IMAGE}
+                    alt={video.title}
+                    fill
+                    className="object-cover transition-transform duration-300 group-hover:scale-105"
+                    onError={() => handleImageError(`video-${video.id}`)}
+                  />
+                  <div className="absolute inset-0 flex items-center justify-center bg-black/40 opacity-0 transition-opacity group-hover:opacity-100">
+                    <svg
+                      className="h-16 w-16 text-white"
+                      fill="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path d="M8 5v14l11-7z" />
+                    </svg>
+                  </div>
+                </div>
+                <div className="p-4">
+                  <h3 className="font-semibold text-slate-100 line-clamp-2 group-hover:text-emerald-300 transition-colors">
+                    {video.title}
+                  </h3>
+                  <p className="mt-2 text-xs text-slate-400">
+                    {new Date(video.publishedAt).toLocaleDateString("en-US", {
+                      year: "numeric",
+                      month: "long",
+                      day: "numeric",
+                    })}
+                  </p>
+                  {video.description && (
+                    <p className="mt-2 text-sm text-slate-300 line-clamp-2">
+                      {video.description}
+                    </p>
+                  )}
                 </div>
               </a>
             ))}
