@@ -3,6 +3,9 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 
+// Fallback placeholder for broken/missing images
+const FALLBACK_IMAGE = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 225'%3E%3Crect width='400' height='225' fill='%231e293b'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='system-ui' font-size='16' fill='%2394a3b8'%3ENo Image Available%3C/text%3E%3C/svg%3E";
+
 // Types
 interface YouTubeVideo {
   id: string;
@@ -29,6 +32,11 @@ export default function MediaPage() {
   const [loadingArticles, setLoadingArticles] = useState(true);
   const [videoError, setVideoError] = useState<string | null>(null);
   const [articleError, setArticleError] = useState<string | null>(null);
+  const [brokenImages, setBrokenImages] = useState<Set<string>>(new Set());
+
+  const handleImageError = (id: string) => {
+    setBrokenImages((prev) => new Set(prev).add(id));
+  };
 
   // Fetch YouTube videos
   useEffect(() => {
@@ -146,10 +154,11 @@ export default function MediaPage() {
               >
                 <div className="relative aspect-video w-full overflow-hidden bg-slate-800">
                   <Image
-                    src={video.thumbnail}
+                    src={brokenImages.has(`video-${video.id}`) ? FALLBACK_IMAGE : video.thumbnail || FALLBACK_IMAGE}
                     alt={video.title}
                     fill
                     className="object-cover transition-transform duration-300 group-hover:scale-105"
+                    onError={() => handleImageError(`video-${video.id}`)}
                   />
                   <div className="absolute inset-0 flex items-center justify-center bg-black/40 opacity-0 transition-opacity group-hover:opacity-100">
                     <svg
@@ -229,16 +238,19 @@ export default function MediaPage() {
                 rel="noopener noreferrer"
                 className="group rounded-xl border border-slate-800 bg-slate-900/40 overflow-hidden transition-all duration-300 hover:border-slate-600 hover:shadow-lg hover:shadow-emerald-500/10"
               >
-                {article.thumbnail && (
-                  <div className="relative aspect-video w-full overflow-hidden bg-slate-800">
-                    <Image
-                      src={article.thumbnail}
-                      alt={article.title}
-                      fill
-                      className="object-cover transition-transform duration-300 group-hover:scale-105"
-                    />
-                  </div>
-                )}
+                <div className="relative aspect-video w-full overflow-hidden bg-slate-800">
+                  <Image
+                    src={
+                      brokenImages.has(`article-${index}`)
+                        ? FALLBACK_IMAGE
+                        : article.thumbnail || FALLBACK_IMAGE
+                    }
+                    alt={article.title}
+                    fill
+                    className="object-cover transition-transform duration-300 group-hover:scale-105"
+                    onError={() => handleImageError(`article-${index}`)}
+                  />
+                </div>
                 <div className="p-4">
                   <h3 className="font-semibold text-slate-100 line-clamp-2 group-hover:text-emerald-300 transition-colors">
                     {article.title}
