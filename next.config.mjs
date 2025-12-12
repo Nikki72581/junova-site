@@ -10,7 +10,7 @@ const nextConfig = {
       },
       {
         protocol: 'https',
-        hostname: 'cdn-images-1.medium.com',
+        hostname: 'cdn-images-*.medium.com',
         pathname: '/**',
       },
       {
