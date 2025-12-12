@@ -15,30 +15,30 @@ interface MediumArticle {
 
 function extractImageFromContent(content: string): string | undefined {
   // Try multiple patterns to extract image from content
+  // Priority: get the first hero/feature image, not tracking pixels
 
-  // Pattern 1: Standard img tag
-  const imgMatch = content.match(/<img[^>]+src=["']([^"'>]+)["']/);
-  if (imgMatch && imgMatch[1]) {
-    // Filter out tracking pixels (1x1 images)
-    if (!imgMatch[1].includes('stat?event') && !imgMatch[1].includes('width="1"')) {
-      return imgMatch[1];
-    }
-  }
-
-  // Pattern 2: Figure with img tag (Medium uses this)
+  // Pattern 1: First figure with img tag (Medium's hero images use this)
   const figureMatch = content.match(/<figure[^>]*>.*?<img[^>]+src=["']([^"'>]+)["']/);
-  if (figureMatch && figureMatch[1]) {
-    if (!figureMatch[1].includes('stat?event')) {
-      return figureMatch[1];
-    }
+  if (figureMatch && figureMatch[1] && !figureMatch[1].includes('stat?event') && !figureMatch[1].includes('width="1"')) {
+    return figureMatch[1];
   }
 
-  // Pattern 3: Any Medium CDN image URL
-  const cdnMatch = content.match(/https:\/\/cdn-images-\d+\.medium\.com\/[^"\s<>]+/);
-  if (cdnMatch && cdnMatch[0]) {
-    if (!cdnMatch[0].includes('stat?event')) {
-      return cdnMatch[0];
-    }
+  // Pattern 2: First img tag with alt attribute (usually content images, not tracking)
+  const imgWithAltMatch = content.match(/<img[^>]+alt=["'][^"']*["'][^>]+src=["']([^"'>]+)["']/);
+  if (imgWithAltMatch && imgWithAltMatch[1] && !imgWithAltMatch[1].includes('stat?event')) {
+    return imgWithAltMatch[1];
+  }
+
+  // Pattern 3: Any img tag (but filter out tracking pixels)
+  const imgMatch = content.match(/<img[^>]+src=["']([^"'>]+)["']/);
+  if (imgMatch && imgMatch[1] && !imgMatch[1].includes('stat?event') && !imgMatch[1].includes('width="1"') && !imgMatch[1].includes('height="1"')) {
+    return imgMatch[1];
+  }
+
+  // Pattern 4: Direct Medium CDN URL (last resort)
+  const cdnMatch = content.match(/https:\/\/cdn-images-\d+\.medium\.com\/max\/\d+\/[^"\s<>]+/);
+  if (cdnMatch && cdnMatch[0] && !cdnMatch[0].includes('stat?event')) {
+    return cdnMatch[0];
   }
 
   return undefined;
@@ -65,9 +65,10 @@ function parseRSSFeed(xmlText: string): MediumArticle[] {
     const pubDateMatch = itemContent.match(/<pubDate>(.*?)<\/pubDate>/);
     const pubDate = pubDateMatch ? pubDateMatch[1] : "";
 
-    // Extract description/content
-    const descMatch = itemContent.match(/<description><!\[CDATA\[([\s\S]*?)\]\]><\/description>/) ||
-                      itemContent.match(/<content:encoded><!\[CDATA\[([\s\S]*?)\]\]><\/content:encoded>/);
+    // Extract content:encoded first (has full content), fallback to description
+    const contentMatch = itemContent.match(/<content:encoded><!\[CDATA\[([\s\S]*?)\]\]><\/content:encoded>/);
+    const descMatch = itemContent.match(/<description><!\[CDATA\[([\s\S]*?)\]\]><\/description>/);
+    const fullContent = contentMatch ? contentMatch[1] : "";
     const description = descMatch ? descMatch[1] : "";
 
     // Extract categories
@@ -77,8 +78,8 @@ function parseRSSFeed(xmlText: string): MediumArticle[] {
       categories.push(catMatch[1]);
     }
 
-    // Extract thumbnail
-    const thumbnail = extractImageFromContent(description);
+    // Extract thumbnail from content:encoded first (where Medium stores the hero image), fallback to description
+    const thumbnail = extractImageFromContent(fullContent) || extractImageFromContent(description);
 
     if (title && link) {
       articles.push({
