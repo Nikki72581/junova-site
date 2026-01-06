@@ -104,6 +104,39 @@ export default function PeoplePage() {
             </div>
           </article>
 
+          {/* Aaron */}
+          <article className="flex gap-4 rounded-xl border border-neutral-800 bg-neutral-950/40 p-4">
+            <div className="flex-shrink-0">
+              {/* Replace /aaron.jpg with your actual file path in /public */}
+              <Image
+                src="/aaron.jpg"
+                alt="Aaron Ciccarello"
+                width={96}
+                height={96}
+                className="h-24 w-24 rounded-full object-cover"
+              />
+            </div>
+            <div className="space-y-1 text-sm text-neutral-300">
+              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-neutral-400">
+                Process Architect • R&D + QA
+              </p>
+              <h3 className="text-base font-semibold text-white">
+                Aaron Ciccarello
+              </h3>
+              <p>
+                Business process expert who connects the dots between what we
+                build and what actually works in the wild. Brings deep
+                experience in quality systems, compliance, and making sure
+                &quot;done&quot; means &quot;battle-tested.&quot;
+              </p>
+              <p className="text-xs text-neutral-400">
+                Known for stress-testing assumptions, asking &quot;what
+                breaks?&quot; before it does, and keeping R&D grounded in
+                real-world constraints.
+              </p>
+            </div>
+          </article>
+
           {/* Glitch */}
           <article className="flex gap-4 rounded-xl border border-neutral-800 bg-neutral-950/40 p-4">
             <div className="flex h-24 w-24 flex-shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-emerald-400/70 via-purple-500/70 to-sky-500/70 text-3xl font-bold text-white">
