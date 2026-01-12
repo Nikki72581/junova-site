@@ -147,96 +147,119 @@ export default function Contact() {
 
   return (
     <section className="container-lg py-20">
-      <div className="max-w-5xl mx-auto">
-        {/* Story Section */}
-        <div className="mb-16 text-center">
-          <h1 className="text-4xl md:text-5xl font-bold mb-6">
-            Let's create something the VARs will fear.
+      <div className="max-w-4xl mx-auto">
+        {/* Personal Introduction */}
+        <div className="mb-12">
+          <h1 className="text-4xl md:text-5xl font-bold mb-8">
+            Hi, it's me, Nicole.
           </h1>
-          
-          <div className="prose prose-invert prose-lg mx-auto text-white/80 space-y-4">
+
+          <div className="prose prose-invert prose-lg max-w-none text-white/90 space-y-4 leading-relaxed">
             <p>
-              You've been sold to. Upsold. Cross-sold. Locked into partnerships that benefit everyone except you. 
-              Software that promised freedom but delivered dependency.
+              If you're on this page, it's probably because we just met, or someone sent you here because you're trying to solve something messy. Either way, welcome.
             </p>
-            
-            <p className="text-xl font-semibold text-white">
-              We're here to flip that script.
-            </p>
-            
+
             <p>
-              At Junova, we don't sell software. We don't take kickbacks. We don't care about vendor quotas. 
-              We build freedom—the kind where your systems work for <em>you</em>, not the other way around.
+              I've spent years in the ERP + SMB software world, working with systems like Sage, Acumatica, Microsoft Dynamics, and NetSuite. I've also lived this from more angles than most people realize exist: end user, consultant, VAR-side, ISV-side, and product leadership. So I don't just understand the software, I understand the reality around it: the people, the processes, the pressure, and the "how is this still held together" spreadsheets.
             </p>
-            
+
             <p>
-              Your ERP should be a tool, not a trap. Your data should be yours. Your decisions should be 
-              based on what's best for your business, not what's best for a VAR's commission check.
+              Today, I run Junova as an independent, with a small team and a wide network of trusted specialists.
             </p>
-            
-            <p className="text-lg text-white/90">
-              <strong>Sound like a different approach?</strong> That's because it is.
+
+            <p className="text-xl font-semibold text-white pt-4">
+              What matters to me is pretty simple:
+            </p>
+
+            <p>
+              We help you fix the process first and choose the tools second.<br />
+              And if we're not the right team for the job, we'll tell you that up front. No ego, no upsell, no pretending.
+            </p>
+
+            <div className="bg-white/5 border border-white/10 rounded-lg p-6 my-8">
+              <p className="font-semibold text-white mb-3">We can help with:</p>
+              <ul className="space-y-2 text-white/90">
+                <li>ERP consulting + implementation support</li>
+                <li>Process/workflow cleanup (aka: "why is this taking 12 steps?")</li>
+                <li>Technical development + customization</li>
+                <li>Pre-sales support and decision guidance when you're comparing solutions</li>
+              </ul>
+            </div>
+
+            <p>
+              If you're looking for someone who's direct, practical, and not here to waste your time, you're in the right place.
+            </p>
+
+            <p className="font-semibold text-white">
+              Tell me what you're trying to solve using the form below, and we'll take it from there.
             </p>
           </div>
         </div>
 
-        {/* Form Section */}
-        <div className="card p-10 max-w-2xl mx-auto">
-          <h2 className="text-2xl font-bold mb-2">Ready to talk?</h2>
-          <p className="text-white/70 mb-6">Tell us what you're dealing with. No sales pitch. Just real talk.</p>
-          
+        {/* Booking Button */}
+        <div className="text-center mb-12">
+          <a
+            href="https://outlook.office.com/bookwithme/user/acab9733ad464b189c2e7e375475706b@junova.io?anonymous&ismsaljsauthenabled&ep=plink"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-block rounded-full px-8 py-4 bg-white text-black font-semibold text-lg shadow-glow hover:shadow-glow2 transition"
+          >
+            Book a Call with Me
+          </a>
+          <p className="text-white/60 text-sm mt-3">
+            Or fill out the form below and I'll reach out
+          </p>
+        </div>
+
+        {/* Contact Form */}
+        <div className="card p-8 md:p-10 max-w-2xl mx-auto">
+          <h2 className="text-2xl font-bold mb-6">Get in Touch</h2>
+
           <form onSubmit={onSubmit} className="space-y-4">
             <input type="hidden" name="access_key" value="5e11c4de-e663-4551-a01b-469c6c741217" />
             <input type="hidden" name="subject" value="New Junova Contact Form Submission" />
 
             <div>
               <label className="block text-sm text-white/70 mb-1">Name</label>
-              <input 
-                name="name" 
+              <input
+                name="name"
                 type="text"
-                required 
-                className="w-full px-3 py-2 rounded-lg bg-black/40 border border-white/10 focus:outline-none focus:border-white/40 transition" 
+                required
+                className="w-full px-3 py-2 rounded-lg bg-black/40 border border-white/10 focus:outline-none focus:border-white/40 transition"
               />
             </div>
 
             <div>
               <label className="block text-sm text-white/70 mb-1">Email</label>
-              <input 
-                name="email" 
-                type="email" 
-                required 
-                className="w-full px-3 py-2 rounded-lg bg-black/40 border border-white/10 focus:outline-none focus:border-white/40 transition" 
+              <input
+                name="email"
+                type="email"
+                required
+                className="w-full px-3 py-2 rounded-lg bg-black/40 border border-white/10 focus:outline-none focus:border-white/40 transition"
               />
             </div>
 
             <div>
-              <label className="block text-sm text-white/70 mb-1">What brings you here?</label>
-              <textarea 
-                name="message" 
-                rows={5} 
+              <label className="block text-sm text-white/70 mb-1">What are you trying to solve?</label>
+              <textarea
+                name="message"
+                rows={5}
                 required
-                placeholder="Tell us about your current setup, what's not working, or what you're trying to build..."
-                className="w-full px-3 py-2 rounded-lg bg-black/40 border border-white/10 focus:outline-none focus:border-white/40 transition" 
+                placeholder="Tell me about your current setup, what's not working, or what you're trying to build..."
+                className="w-full px-3 py-2 rounded-lg bg-black/40 border border-white/10 focus:outline-none focus:border-white/40 transition"
               />
             </div>
 
-            <button 
+            <button
               type="submit"
               disabled={isSubmitting}
               className="w-full rounded-full px-6 py-3 bg-white text-black font-semibold shadow-glow hover:shadow-glow2 transition disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {isSubmitting ? "Sending..." : "Let's Talk"}
+              {isSubmitting ? "Sending..." : "Send Message"}
             </button>
 
             {status && <p className="text-sm text-red-400 mt-2">{status}</p>}
           </form>
-        </div>
-
-        {/* Trust Indicators */}
-        <div className="mt-12 text-center">
-          <p className="text-white/60 text-sm">
-            No sales calls. No vendor pitches. Just independent advisory that puts your business first.
-          </p>
         </div>
       </div>
     </section>
