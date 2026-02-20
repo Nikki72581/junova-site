@@ -34,10 +34,10 @@ export default function PeoplePage() {
         <div className="space-y-2">
           <h2 className="text-2xl font-semibold text-white">Our team + you</h2>
           <p className="text-neutral-300">
-            We keep the org chart simple: a strategist, an operator, an AI
-            engine, and you. You bring deep knowledge of your business. We bring
-            pattern recognition, architecture, and the courage to say when the
-            tools are the problem, not the people.
+            We keep the org chart simple: a strategist, an AI engine, and you.
+            You bring deep knowledge of your business. We bring pattern
+            recognition, architecture, and the courage to say when the tools
+            are the problem, not the people.
           </p>
         </div>
 
@@ -69,37 +69,6 @@ export default function PeoplePage() {
               <p className="text-xs text-neutral-400">
                 Known for asking uncomfortable questions, defending end users,
                 and shipping solutions instead of decks.
-              </p>
-            </div>
-          </article>
-
-          {/* Jess */}
-          <article className="flex gap-4 rounded-xl border border-neutral-800 bg-neutral-950/40 p-4">
-            <div className="flex-shrink-0">
-              {/* Replace /jess.jpg with your actual file path in /public */}
-              <Image
-                src="/jess.jpg"
-                alt="Jessica DeAngelo"
-                width={96}
-                height={96}
-                className="h-24 w-24 rounded-full object-cover"
-              />
-            </div>
-            <div className="space-y-1 text-sm text-neutral-300">
-              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-neutral-400">
-                System Whisperer • Operations
-              </p>
-              <h3 className="text-base font-semibold text-white">
-                Jessica DeAngelo
-              </h3>
-              <p>
-                Ops-focused problem solver who makes tools behave and people&apos;s
-                lives easier. Lives in the details where most projects quietly
-                fall apart.
-              </p>
-              <p className="text-xs text-neutral-400">
-                Known for translating big ideas into checklists, timelines, and
-                &quot;we actually did the thing&quot; outcomes.
               </p>
             </div>
           </article>
