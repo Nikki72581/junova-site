@@ -7,6 +7,7 @@ import {
 } from "@sanity/icons";
 import { schemaTypes } from "./sanity/schemas";
 import { StudioLogo } from "./sanity/components/StudioLogo";
+import { junovaTheme } from "./sanity/theme";
 
 const CATEGORIES = [
   "NetSuite",
@@ -25,6 +26,8 @@ export default defineConfig({
   basePath: "/studio",
   projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID!,
   dataset: process.env.NEXT_PUBLIC_SANITY_DATASET ?? "production",
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  theme: junovaTheme as any,
 
   studio: {
     components: {
