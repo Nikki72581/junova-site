@@ -1,9 +1,11 @@
 import { defineField, defineType } from "sanity";
+import { ComposeIcon } from "@sanity/icons";
 
 export const articleType = defineType({
   name: "article",
   title: "Article",
   type: "document",
+  icon: ComposeIcon,
   fields: [
     defineField({
       name: "title",
