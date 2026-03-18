@@ -12,11 +12,13 @@ export function NavBar() {
     { href: "/processes", label: "Processes" },
     { href: "/product", label: "Product" },
     { href: "/media", label: "Media" },
+    { href: "/learn", label: "Learn" },
     { href: "/contact", label: "Contact" },
   ];
   useEffect(() => {
     setIsOpen(false);
   }, [pathname]);
+  if (pathname?.startsWith("/learn")) return null;
   return (<header className="sticky top-0 z-50 backdrop-blur bg-black/30 border-b border-white/10">
     <div className="container-lg flex items-center justify-between h-16">
       <Link href="/" className="flex items-center gap-2 font-bold">
