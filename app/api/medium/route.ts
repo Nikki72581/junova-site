@@ -1,7 +1,5 @@
 import { NextResponse } from "next/server";
 
-export const runtime = "edge";
-
 const MEDIUM_RSS_URL = "https://medium.com/feed/@nicole_68130";
 
 interface MediumArticle {

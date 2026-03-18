@@ -13,7 +13,7 @@ export const revalidate = 60;
 export const dynamicParams = true; // serve un-prerendered slugs on demand
 
 interface Props {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }
 
 export async function generateStaticParams() {
@@ -31,7 +31,8 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: Props) {
-  const article = await getArticleBySlug(params.slug);
+  const { slug } = await params;
+  const article = await getArticleBySlug(slug);
   if (!article) return {};
   return {
     title: `${article.title} — Junova Learning Center`,
@@ -88,8 +89,9 @@ const portableTextComponents = {
 };
 
 export default async function ArticlePage({ params }: Props) {
+  const { slug } = await params;
   const [article, allArticles] = await Promise.all([
-    getArticleBySlug(params.slug),
+    getArticleBySlug(slug),
     getAllArticles(),
   ]);
 

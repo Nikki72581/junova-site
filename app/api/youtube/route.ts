@@ -1,7 +1,5 @@
 import { NextResponse } from "next/server";
 
-export const runtime = "edge";
-
 const YOUTUBE_API_KEY = process.env.YOUTUBE_API_KEY;
 const PLAYLIST_ID = "PL6JaEFg7KI7dPH_zKbynhFU2SLOTYepOR";
 
