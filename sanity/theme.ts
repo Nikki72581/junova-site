@@ -22,90 +22,44 @@ function deepMerge(target: any, override: any): any {
 // Junova brand palette
 const PURPLE = "#6E3AFF";
 const GREEN = "#21D07A";
-const BG = "#0a0b0f";
-const PANEL = "#12131a";
-const PRESSED = "#1a1b28";
+const BG = "#0a0b0f";       // main canvas
+const PANEL = "#12131a";    // hovered / muted panels
+const BORDER = "#1c1e2a";   // subtle borders
 
-export const junovaTheme = deepMerge(studioTheme, {
+// The ThemeProvider in Sanity v5 reads from theme.v2, not theme.color.
+// theme.color is a source token spec; theme.v2 is the compiled output that is
+// actually rendered. We deep-merge v2 directly so overrides take effect.
+const v2Overrides = {
   color: {
     dark: {
       default: {
-        base: {
-          bg: BG,
-          border: "#1c1e2a",
-          focusRing: PURPLE,
-          shadow: {
-            outline: "rgba(110,58,255,0.3)",
-          },
-        },
-        card: {
-          enabled: { bg: BG },
-          hovered: { bg: PANEL },
-          pressed: { bg: PRESSED },
-          selected: { bg: PURPLE },
-          disabled: { bg: BG },
-        },
-        input: {
-          default: {
-            enabled: { bg: BG },
-            hovered: { bg: PANEL },
-          },
-          invalid: {
-            enabled: { bg: "#180a0a" },
-            hovered: { bg: "#1e0d0d" },
-          },
-        },
-        muted: {
-          enabled: { bg: PANEL },
-          hovered: { bg: PRESSED },
-        },
+        bg: BG,
+        border: BORDER,
+        focusRing: PURPLE,
+        muted: { bg: PANEL },
       },
       primary: {
-        base: {
-          bg: "#0c0918",
-          fg: "#d4c9ff",
-          border: "#3a1e95",
-          focusRing: PURPLE,
-          shadow: {
-            outline: "rgba(110,58,255,0.4)",
-          },
-        },
-        card: {
-          selected: { bg: PURPLE },
-          hovered: { bg: "#13102a" },
-        },
-        solid: {
-          default: {
-            enabled: { bg: PURPLE },
-            hovered: { bg: "#7b4fff" },
-            pressed: { bg: "#5a2ed4" },
-          },
-        },
+        bg: "#0c0918",
+        border: "#3a1e95",
+        focusRing: PURPLE,
+        muted: { bg: "#13102a" },
       },
       positive: {
-        base: {
-          bg: "#071210",
-          fg: "#b0f0d0",
-          border: "#145a30",
-          focusRing: GREEN,
-          shadow: {
-            outline: "rgba(33,208,122,0.35)",
-          },
-        },
-        solid: {
-          default: {
-            enabled: { bg: GREEN },
-            hovered: { bg: "#28e88a" },
-            pressed: { bg: "#18a85e" },
-          },
-        },
+        bg: "#071210",
+        border: "#145a30",
+        focusRing: GREEN,
+        muted: { bg: "#0c1f16" },
       },
       caution: {
-        base: { focusRing: "#f0b429" },
+        focusRing: "#f0b429",
       },
       critical: {
-        base: { focusRing: "#ff5266" },
+        focusRing: "#ff5266",
       },
     },
   },
+};
+
+export const junovaTheme = deepMerge(studioTheme, {
+  v2: deepMerge(studioTheme.v2, v2Overrides),
 });
