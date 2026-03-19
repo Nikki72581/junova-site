@@ -1,7 +1,11 @@
 import type { PortableTextBlock } from "@portabletext/react";
 
 /** Estimate reading time from Portable Text body (≈200 wpm) */
-export function estimateReadTime(body: PortableTextBlock[]): string {
+export function estimateReadTime(
+  body: PortableTextBlock[],
+  overrideMinutes?: number
+): string {
+  if (overrideMinutes) return `${overrideMinutes} min read`;
   if (!body?.length) return "5 min read";
   const text = body
     .filter((b) => b._type === "block")

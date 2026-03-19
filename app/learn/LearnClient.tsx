@@ -3,25 +3,36 @@
 import { useState, useMemo } from "react";
 import Link from "next/link";
 import type { SanityArticle } from "@/lib/sanity/queries";
-import { estimateReadTime } from "@/lib/sanity/utils";
 
 // ── Per-category display metadata ─────────────────────────────────────────────
 type Color = "blue" | "teal" | "gold" | "coral";
 
 const CATEGORY_META: Record<string, { icon: string; color: Color; tag: string }> = {
   "NetSuite":           { icon: "📊", color: "blue",  tag: "NS"   },
+  "SAP":                { icon: "🔷", color: "blue",  tag: "SAP"  },
   "Microsoft Dynamics": { icon: "🔷", color: "blue",  tag: "D365" },
   "Acumatica":          { icon: "⚙️", color: "teal",  tag: "ACU"  },
+  "Salesforce":         { icon: "☁️", color: "teal",  tag: "SF"   },
   "AI & Automation":    { icon: "🤖", color: "gold",  tag: "AI"   },
+  "Integrations":       { icon: "🔗", color: "gold",  tag: "INT"  },
   "General ERP":        { icon: "📋", color: "coral", tag: "ERP"  },
 };
 
-function getDots(body: any[]): number {
-  const readTime = estimateReadTime(body);
-  const mins = parseInt(readTime) || 5;
-  if (mins <= 7)  return 1;
-  if (mins <= 10) return 2;
-  return 3;
+const DIFFICULTY_LABELS: Record<string, string> = {
+  beginner:     "Beginner",
+  intermediate: "Intermediate",
+  advanced:     "Advanced",
+};
+
+function difficultyToDots(difficulty?: string): number {
+  if (difficulty === "advanced")     return 3;
+  if (difficulty === "intermediate") return 2;
+  return 1;
+}
+
+function formatReadTime(article: SanityArticle): string {
+  if (article.readTimeOverride) return `${article.readTimeOverride} min read`;
+  return "";
 }
 
 function DifficultyDots({ count, color }: { count: number; color: Color }) {
@@ -52,7 +63,9 @@ export default function LearnClient({ articles }: Props) {
     [articles]
   );
 
-  const featured = articles[0] ?? null;
+  // Use isFeatured flag; fall back to first article
+  const featured =
+    articles.find((a) => a.isFeatured) ?? articles[0] ?? null;
 
   const platformItems = Object.entries(CATEGORY_META).map(([label, meta]) => ({
     label,
@@ -190,8 +203,20 @@ export default function LearnClient({ articles }: Props) {
                   <p className="lp-featured-desc">{featured.description}</p>
                   <div className="lp-featured-meta">
                     <span className="lp-meta-chip">{featuredMeta.icon} {featured.category}</span>
-                    <span className="lp-meta-chip">·</span>
-                    <span className="lp-meta-chip">⏱ {estimateReadTime(featured.body)}</span>
+                    {featured.difficulty && (
+                      <>
+                        <span className="lp-meta-chip">·</span>
+                        <span className="lp-meta-chip">
+                          {DIFFICULTY_LABELS[featured.difficulty] ?? featured.difficulty}
+                        </span>
+                      </>
+                    )}
+                    {formatReadTime(featured) && (
+                      <>
+                        <span className="lp-meta-chip">·</span>
+                        <span className="lp-meta-chip">⏱ {formatReadTime(featured)}</span>
+                      </>
+                    )}
                   </div>
                 </div>
                 <Link href={`/learn/${featured.slug}`} className="lp-featured-cta">
@@ -224,7 +249,8 @@ export default function LearnClient({ articles }: Props) {
               const meta = CATEGORY_META[article.category] ?? {
                 icon: "📄", color: "blue" as Color, tag: "ART",
               };
-              const dots = getDots(article.body);
+              const dots = difficultyToDots(article.difficulty);
+              const readTime = formatReadTime(article);
               return (
                 <Link
                   key={article._id}
@@ -239,7 +265,7 @@ export default function LearnClient({ articles }: Props) {
                   <p className="lp-card-desc">{article.description}</p>
                   <div className="lp-card-footer">
                     <DifficultyDots count={dots} color={meta.color} />
-                    <span className="lp-card-time">{estimateReadTime(article.body)}</span>
+                    {readTime && <span className="lp-card-time">{readTime}</span>}
                     <span className="lp-card-arrow">→</span>
                   </div>
                 </Link>

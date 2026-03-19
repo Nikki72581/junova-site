@@ -2,9 +2,9 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { PortableText } from "@portabletext/react";
 import {
-  getAllArticles,
   getArticleBySlug,
   getAllSlugs,
+  getRelatedArticles,
 } from "@/lib/sanity/queries";
 import { estimateReadTime } from "@/lib/sanity/utils";
 import type { PortableTextBlock } from "@portabletext/react";
@@ -18,8 +18,10 @@ interface Props {
 
 export async function generateStaticParams() {
   // Skip static generation if Sanity isn't configured yet
-  if (!process.env.NEXT_PUBLIC_SANITY_PROJECT_ID ||
-      process.env.NEXT_PUBLIC_SANITY_PROJECT_ID === "your-project-id-here") {
+  if (
+    !process.env.NEXT_PUBLIC_SANITY_PROJECT_ID ||
+    process.env.NEXT_PUBLIC_SANITY_PROJECT_ID === "your-project-id-here"
+  ) {
     return [];
   }
   try {
@@ -35,12 +37,23 @@ export async function generateMetadata({ params }: Props) {
   const article = await getArticleBySlug(slug);
   if (!article) return {};
   return {
-    title: `${article.title} — Junova Learning Center`,
-    description: article.description,
+    title: `${article.seo?.metaTitle ?? article.title} — Junova Learning Center`,
+    description: article.seo?.metaDescription ?? article.description,
+    openGraph: article.seo?.ogImage
+      ? { images: [{ url: article.seo.ogImage }] }
+      : undefined,
   };
 }
 
-// Portable Text rendering components — styled to match the site's dark theme
+// ── Portable Text components ───────────────────────────────────────────────
+
+const CALLOUT_STYLES: Record<string, { border: string; bg: string; icon: string }> = {
+  info:      { border: "border-blue-500/30",  bg: "bg-blue-500/5",  icon: "ℹ️" },
+  tip:       { border: "border-green-500/30", bg: "bg-green-500/5", icon: "💡" },
+  warning:   { border: "border-amber-500/30", bg: "bg-amber-500/5", icon: "⚠️" },
+  important: { border: "border-red-500/30",   bg: "bg-red-500/5",   icon: "🔴" },
+};
+
 const portableTextComponents = {
   block: {
     normal: ({ children }: any) => (
@@ -51,6 +64,9 @@ const portableTextComponents = {
     ),
     h3: ({ children }: any) => (
       <h3 className="text-base font-semibold text-white/80 mt-6 mb-2">{children}</h3>
+    ),
+    h4: ({ children }: any) => (
+      <h4 className="text-sm font-semibold text-white/70 mt-4 mb-1.5">{children}</h4>
     ),
   },
   list: {
@@ -85,22 +101,126 @@ const portableTextComponents = {
         {children}
       </a>
     ),
+    internalLink: ({ children, value }: any) => (
+      <Link
+        href={`/learn/${value?.slug}`}
+        className="text-blue-400 hover:underline"
+      >
+        {children}
+      </Link>
+    ),
   },
+  types: {
+    codeBlock: ({ value }: any) => (
+      <div className="my-6 rounded-lg overflow-hidden border border-white/5">
+        <div className="flex items-center justify-between px-4 py-2 bg-white/5 border-b border-white/5">
+          {value.filename && (
+            <span className="text-xs text-white/30 font-mono">{value.filename}</span>
+          )}
+          {value.language && (
+            <span className="ml-auto text-[10px] text-white/20 uppercase tracking-wider font-medium">
+              {value.language}
+            </span>
+          )}
+        </div>
+        <pre className="p-4 overflow-x-auto bg-white/[0.02]">
+          <code className="text-sm text-white/60 font-mono whitespace-pre">
+            {value.code}
+          </code>
+        </pre>
+      </div>
+    ),
+    callout: ({ value }: any) => {
+      const style = CALLOUT_STYLES[value.tone] ?? CALLOUT_STYLES.info;
+      return (
+        <div className={`my-6 rounded-lg border ${style.border} ${style.bg} px-4 py-3`}>
+          <div className="flex gap-2.5">
+            <span className="text-base shrink-0 mt-0.5">{style.icon}</span>
+            <div className="min-w-0">
+              <PortableText
+                value={value.body}
+                components={portableTextComponents}
+              />
+            </div>
+          </div>
+        </div>
+      );
+    },
+    figure: ({ value }: any) => (
+      <figure className="my-6">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={value.image?.asset?.url ?? value.image}
+          alt={value.alt ?? ""}
+          className="rounded-lg w-full border border-white/5"
+        />
+        {value.caption && (
+          <figcaption className="mt-2 text-center text-xs text-white/25">
+            {value.caption}
+          </figcaption>
+        )}
+      </figure>
+    ),
+    videoEmbed: ({ value }: any) => {
+      const youtubeId = value.url?.match(
+        /(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&\s]+)/
+      )?.[1];
+      return (
+        <figure className="my-6">
+          {youtubeId ? (
+            <div className="aspect-video rounded-lg overflow-hidden border border-white/5">
+              <iframe
+                src={`https://www.youtube.com/embed/${youtubeId}`}
+                title={value.caption ?? "Video"}
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+                className="w-full h-full"
+              />
+            </div>
+          ) : (
+            <a
+              href={value.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="block rounded-lg border border-white/5 bg-white/5 px-4 py-3 text-sm text-blue-400 hover:underline"
+            >
+              ▶ Watch video
+            </a>
+          )}
+          {value.caption && (
+            <figcaption className="mt-2 text-center text-xs text-white/25">
+              {value.caption}
+            </figcaption>
+          )}
+        </figure>
+      );
+    },
+  },
+};
+
+// ── Page ──────────────────────────────────────────────────────────────────
+
+const DIFFICULTY_LABELS: Record<string, string> = {
+  beginner:     "Beginner",
+  intermediate: "Intermediate",
+  advanced:     "Advanced",
 };
 
 export default async function ArticlePage({ params }: Props) {
   const { slug } = await params;
-  const [article, allArticles] = await Promise.all([
-    getArticleBySlug(slug),
-    getAllArticles(),
-  ]);
+  const article = await getArticleBySlug(slug);
 
   if (!article) notFound();
 
-  const readTime = estimateReadTime(article.body);
-  const related = allArticles
-    .filter((a) => a.slug !== article.slug && a.category === article.category)
-    .slice(0, 4);
+  const related = await getRelatedArticles(article._id, article.category);
+
+  const readTime = estimateReadTime(
+    article.body as PortableTextBlock[] ?? [],
+    article.readTimeOverride
+  );
+
+  const displayDate = article.updatedAt ?? article.publishedAt;
+  const dateLabel = article.updatedAt ? "Updated" : "Published";
 
   return (
     <div className="mx-auto max-w-7xl px-6 py-8">
@@ -161,13 +281,17 @@ export default async function ArticlePage({ params }: Props) {
             <p className="mt-3 text-sm text-white/40">{article.description}</p>
             <div className="mt-4 flex flex-wrap items-center gap-4 text-xs text-white/20">
               <span>
-                {new Date(article.publishedAt).toLocaleDateString("en-US", {
+                {dateLabel}{" "}
+                {new Date(displayDate).toLocaleDateString("en-US", {
                   year: "numeric",
                   month: "long",
                   day: "numeric",
                 })}
               </span>
-              <span>{readTime}</span>
+              {readTime && <span>{readTime}</span>}
+              {article.difficulty && (
+                <span>{DIFFICULTY_LABELS[article.difficulty] ?? article.difficulty}</span>
+              )}
             </div>
             {article.tags?.length > 0 && (
               <div className="mt-4 flex flex-wrap gap-1.5">
