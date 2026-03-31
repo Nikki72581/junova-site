@@ -73,6 +73,8 @@ export async function GET() {
       videoId: item.snippet.resourceId.videoId,
     }));
 
+    videos.sort((a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime());
+
     return NextResponse.json({ videos }, {
       headers: {
         'Cache-Control': 'public, s-maxage=3600, stale-while-revalidate=86400',
