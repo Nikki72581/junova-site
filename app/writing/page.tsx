@@ -141,7 +141,7 @@ export default function WritingPage() {
   useEffect(() => {
     fetch("/api/medium")
       .then(r => r.json())
-      .then(data => setArticles(data.items ?? []))
+      .then(data => setArticles(data.articles ?? []))
       .finally(() => setLoadingArticles(false));
 
     fetch("/api/youtube")
