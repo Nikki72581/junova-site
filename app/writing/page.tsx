@@ -22,6 +22,31 @@ type Video = {
   videoId: string;
 };
 
+type GuestArticle = {
+  title: string;
+  publication: string;
+  pubDate: string;
+  description: string;
+  href: string;
+};
+
+const guestArticles: GuestArticle[] = [
+  {
+    title: "From Modern UI to Operational Intelligence: Acumatica 26R1 Explained",
+    publication: "Enterprise Software Express",
+    pubDate: "April 1, 2026",
+    description: "Examining the latest features and capabilities introduced in Acumatica's 26R1 release, highlighting why the update warrants attention from enterprise software users and stakeholders.",
+    href: "https://enterprisesoftwareexpress.com/from-modern-ui-to-operational-intelligence-acumatica-26r1-explained/",
+  },
+  {
+    title: "Acumatica + AI: A smarter troubleshooting guide for ChatGPT, Claude, and other AI assistants",
+    publication: "Acu-Connect",
+    pubDate: "March 17, 2026",
+    description: "How to effectively leverage AI assistants like ChatGPT and Claude for troubleshooting Acumatica issues — providing the right context, artifacts, and prompts to get accurate solutions.",
+    href: "https://acu-connect.com/2026/03/17/acumatica-ai/",
+  },
+];
+
 function formatDate(dateStr: string) {
   return new Date(dateStr).toLocaleDateString("en-US", {
     year: "numeric",
@@ -163,9 +188,9 @@ export default function WritingPage() {
           Thoughts on ERP, AI-augmented consulting, and building technology that serves people.
         </p>
 
-        {/* Articles */}
+        {/* Medium Articles */}
         <section className="mt-14">
-          <h2 className="text-xl font-semibold text-white mb-6">Articles</h2>
+          <h2 className="text-xl font-semibold text-white mb-6">Medium Articles</h2>
           {loadingArticles ? (
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {[...Array(3)].map((_, i) => (
@@ -186,6 +211,49 @@ export default function WritingPage() {
               ))}
             </div>
           )}
+        </section>
+
+        {/* Guest Articles */}
+        <section className="mt-16">
+          <h2 className="text-xl font-semibold text-white mb-6">Guest Articles</h2>
+          <div className="flex flex-col gap-4">
+            {guestArticles.map(article => (
+              <a
+                key={article.href}
+                href={article.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group rounded-2xl border border-slate-800 bg-slate-900/40 px-6 py-5 flex flex-col sm:flex-row sm:items-start gap-4 hover:border-slate-600 transition"
+              >
+                <div className="flex-1 min-w-0">
+                  <div className="flex flex-wrap items-center gap-2 mb-2">
+                    <span className="text-xs font-semibold px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-300 border border-emerald-500/30">
+                      {article.publication}
+                    </span>
+                    <span className="text-xs text-slate-500">{article.pubDate}</span>
+                  </div>
+                  <h3 className="text-base font-semibold leading-snug group-hover:text-emerald-300 transition">
+                    {article.title}
+                  </h3>
+                  <p className="mt-1.5 text-sm text-slate-400">{article.description}</p>
+                </div>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="text-slate-600 group-hover:text-slate-400 transition flex-shrink-0 mt-1"
+                >
+                  <path d="M7 17L17 7M17 7H7M17 7v10"/>
+                </svg>
+              </a>
+            ))}
+          </div>
         </section>
 
         {/* Appearances */}
